@@ -1,3 +1,4 @@
+
 function setState(newState){
     this.state = { ...this.state, ...newState };    
     
@@ -22,14 +23,30 @@ function useCustom(React){
         }
     }, []);
 
-    return [ this.state, this.setState ];
+    return [ this.state, this.actions ];
 }
 
+function associateActions(store, actions){
+    const associateActions  = {};
 
-const useGlobalHook = (React, initialState) => {
-    const store = { state: initialState, listeners: [] };
+    Object.keys(actions).forEach((key) => {
+        if (typeof actions[key] === 'function'){
+            associateActions[key] = actions[key].bind(null, store);
+        }
+
+        if (typeof actions[key] === 'object'){
+            associateActions[key] = associateActions(store, actions[key]);
+        }
+    });
+    console.log(associateActions)
+    return associateActions;
+
+}
+const useGlobalHook = (React, initialState, actions) => {
+    const store = { state: initialState, listeners: [] };    
     // the store in bind function will be the this
     store.setState = setState.bind(store);
+    store.actions = associateActions(store, actions);
     return useCustom.bind(store, React);
 }
 

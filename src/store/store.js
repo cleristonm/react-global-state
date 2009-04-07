@@ -1,8 +1,12 @@
 import React from 'react';
 import useGlobalHook from './useGlobalHook';
 
-const initialState = { counter: 0};;
+import * as actions from '../actions/actions';
 
-const useGlobal = useGlobalHook( React, initialState );
+const initialState = { 
+    counter: 0 
+};
+
+const useGlobal = useGlobalHook( React, initialState, actions );
 
 export default useGlobal;
