@@ -1,8 +1,8 @@
 import React from 'react';
-import useCustom from '../store/customHook';
+import useGlobal from '../store/store';
 
 const Counter = (props) => {
-    const [ globalState, setGlobalState ] = useCustom();
+    const [ globalState, setGlobalState ] = useGlobal();
 
     const add1Global = () => {        
         const newCounterValue = globalState.counter + 1;
